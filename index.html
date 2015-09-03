@@ -3,7 +3,7 @@
 		
 	</head>
 	<body>
-		<nav route="menu">
+		<nav id="menu">
 			<button to-route="login">Login</button>
 			<button to-route="register">Register</button>
 		</nav>
@@ -18,6 +18,13 @@
 			<input type="text" placeholder="E-mail" />			
 		</div>
 		<script src='https://code.jquery.com/jquery-1.11.3.min.js'></script>
-		<script src='router8080.js'></script>		
+		<script src='router8080.js'></script>
+		<script>
+		$(function(){
+			Router.set(
+				'login',{exit: function(){ alert('sai'); }, init: function(){ alert('entra') } }
+			);
+		});
+		</script>
 	</body>
 </html>

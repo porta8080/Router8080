@@ -10,7 +10,6 @@ Router.hasRoute = function(route){
 
 Router.go = function(route){
 	if(Router.hasRoute(Router.current) && 'exit' in Router.table[Router.current]) Router.table[Router.current].exit();
-	
     var options = Router.table[route];
     if(options){
 		if('clear' in options)

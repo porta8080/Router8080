@@ -1,24 +1,27 @@
-function Router(){}
+function Router8080(){}
 
-Router.table = {};
-Router.current = null;
+Router8080.table = {};
+Router8080.current = null;
 
-Router.hasRoute = function(route){
+Router8080.hasRoute = function(route){
 	if(!route) return false;
-	return route in Router.table;
-}
+	return route in Router8080.table;
+};
 
-Router.go = function(route){
-	if(Router.hasRoute(Router.current) && 'exit' in Router.table[Router.current]) Router.table[Router.current].exit();
-    var options = Router.table[route];
+Router8080.go = function(route){
+	if(route == Router8080.current) return false;
+	if(Router8080.hasRoute(Router8080.current) && 'exit' in Router8080.table[Router8080.current]) Router8080.table[Router8080.current].exit();
+	
+    var options = Router8080.table[route];
     if(options){
+		var c;
 		if('clear' in options)
-            for(var k in options.clear) $('.'+options.clear[k]).html('');
+            for(var k in options.clear) $(options.clear[k]).html('');
         if('hide' in options)
-            for(var k in options.hide) $('.'+options.hide[k]).hide();		
+            for(var k in options.hide) $(options.hide[k]).attr('route-hide',route).hide();
         if('show' in options)
-            for(var k in options.show) $('.'+options.show[k]).show();		
-        if('init' in options) options.init();		
+            for(var k in options.show) $(options.show[k]).attr('route-show',route).show();
+        if('init' in options) options.init();
     }
 
     var _this;
@@ -28,35 +31,36 @@ Router.go = function(route){
         else _this.hide();
     });
 
-    Router.current = route;
+    Router8080.current = route;
 };
 
-Router.set = function(route,options){
+Router8080.set = function(route,options){
     if(!options) options = {};
-    Router.table[route] = options;
-    if('default' in options && options.default === true) Router.go(route);
-    return Router;
+    Router8080.table[route] = options;
+    if('default' in options && options.default === true) Router8080.go(route);
+    return Router8080;
 };
 
-Router.empty = function(){
-    for(var k in Router.table) return false;
+Router8080.empty = function(){
+    for(var k in Router8080.table) return false;
     return true;
 };
 
 $(function(){
     var _this, route;
+
     $('[route]').each(function(){
         _this = $(this);
         route = _this.attr('route');
-        Router.set(route);
-        if(!Router.current) Router.go(route);
+        Router8080.set(route);
+        if(!Router8080.current) Router8080.go(route);
     });
 
     $('[to-route]').each(function(){
         _this = $(this);
         _this.click(function(){
             route = $(this).attr('to-route');
-            Router.go(route);
+            Router8080.go(route);
         });
     });
 });

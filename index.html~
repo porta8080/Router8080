@@ -22,7 +22,7 @@
 		<script src='router8080.js'></script>
 		<script>
 		$(function(){
-			Router.set(
+			Router8080.set(
 				'login',{exit: function(){ alert('sai'); }, init: function(){ alert('entra') } }
 			);
 		});

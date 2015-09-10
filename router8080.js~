@@ -34,7 +34,10 @@ Router8080.go = function(route){
 
     Router8080.current = route;
 	try{
-    history.pushState({route: route}, '#'+route, '#'+route);
+	    var r = route;
+//    	    if(location.href.split('#').length == 1) r = '#'+r;
+alert(r);
+	    history.pushState({route: r}, r, r);
 	}catch(e){
 		console.log('Error: '+e);
 	}
@@ -55,19 +58,22 @@ Router8080.empty = function(){
 Router8080.resolveLandingRoute = function(){
     var landing_route = location.hash;
     if(!landing_route || landing_route == '') Router8080.landing_route = false;
-	Router8080.landing_route = landing_route;
+    else Router8080.landing_route = landing_route;
+    return Router8080.landing_route;
 }
 
 $(function(){
-    var _this, route;
-	Router8080.resolveLandingRoute();
+    var _this, route, first_route;
+    Router8080.resolveLandingRoute();
+    
     //check whether we landed in a route
     //make sure default overwrites this and the landed overwrites default
-    $('[route]').each(function(){
+    $('[route]').each(function(i){
         _this = $(this);
         route = _this.attr('route');
         Router8080.set(route);
-        if(!Router8080.current && !Router8080.landing_route) Router8080.go(route);
+        if(i===0) first_route = route;
+        //if(!Router8080.current) Router8080.go(route);
     });
 
     $('[to-route]').each(function(){
@@ -77,6 +83,8 @@ $(function(){
             Router8080.go(route);
         });
     });
- 
-    Router8080.go(Router8080.landing_route);
+    
+    
+    if(Router8080.landing_route) Router8080.go(Router8080.landing_route);
+    else if(!Router8080.current) Router8080.go(first_route);
 });

@@ -1,7 +1,5 @@
 <html>
-	<head>
-		
-	</head>
+	<head></head>
 	<body>
 		<nav id="menu">
 			<button to-route="login">Login</button>

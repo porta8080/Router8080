@@ -8,7 +8,7 @@ Router8080.hasRoute = function(route){
 	return route in Router8080.table;
 };
 
-Router8080.go = function(route){
+Router8080.go = function(route,keep_url){
         if(!route) return false;
 	if(route == Router8080.current) return false;
 	if(Router8080.hasRoute(Router8080.current) && 'exit' in Router8080.table[Router8080.current]) Router8080.table[Router8080.current].exit();
@@ -31,17 +31,15 @@ Router8080.go = function(route){
         if(_this.is('[route='+route+']')) _this.show();
         else _this.hide();
     });
-
-    Router8080.current = route;
-	try{
-	    var r = route;
-//    	    if(location.href.split('#').length == 1) 
-r = '#'+r;
-alert(r);
-	    history.pushState({route: r}, r, r);
-	}catch(e){
-		console.log('Error: '+e);
-	}
+	
+    	Router8080.current = route;
+	if(!keep_url){
+		try{
+		    history.pushState({route: route}, '#'+route, '#'+route);
+		}catch(e){
+		    console.log('Error: '+e);
+		}
+	}	
 };
 
 Router8080.set = function(route,options){
@@ -57,7 +55,7 @@ Router8080.empty = function(){
 };
 
 Router8080.resolveLandingRoute = function(){
-    var landing_route = location.hash;
+    var landing_route = location.hash.replace('#','');
     if(!landing_route || landing_route == '') Router8080.landing_route = false;
     else Router8080.landing_route = landing_route;
     return Router8080.landing_route;
@@ -85,7 +83,6 @@ $(function(){
         });
     });
     
-    
-    if(Router8080.landing_route) Router8080.go(Router8080.landing_route);
+    if(Router8080.landing_route) Router8080.go(Router8080.landing_route,true);
     else if(!Router8080.current) Router8080.go(first_route);
 });
